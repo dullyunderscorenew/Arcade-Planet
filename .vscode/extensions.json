@@ -1,0 +1,20 @@
+{
+  // Extensions that i use, only used for development, not mandatory tho
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "usernamehw.errorlens",
+    "christian-kohler.path-intellisense",
+    "redhat.vscode-xml",
+    "qwtel.sqlite-viewer",
+    "davidanson.vscode-markdownlint",
+    "yzhang.markdown-all-in-one",
+    "timonwong.shellcheck",
+    "charliermarsh.ruff",
+    "llvm-vs-code-extensions.vscode-clangd",
+    "github.vscode-github-actions",
+    "mhutchie.git-graph"
+  ],
+  "unwantedRecommendations": []
+}

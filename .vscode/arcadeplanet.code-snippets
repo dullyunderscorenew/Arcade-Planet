@@ -1,0 +1,216 @@
+{
+	"Open menu (Menu + windowMgr)": {
+		"scope": "javascript",
+		"prefix": "ap-menu",
+		"description": "Open a new menu with entries (public/js/menus/…)",
+		"body": [
+			"export function open${1:Name}(app) {",
+			"  const m = new Menu('${2:TITLE}');",
+			"  m.addEntry('${3:ENTRY}', () => {",
+			"    $0",
+			"  });",
+			"  windowMgr.push(m);",
+			"}",
+		],
+	},
+	"Menu imports": {
+		"scope": "javascript",
+		"prefix": "ap-menu-imports",
+		"description": "Common imports for a menu file",
+		"body": [
+			"import { t } from '../core/i18n.js';",
+			"import { api } from '../core/api.js';",
+			"import { settings } from '../core/settings.js';",
+			"import { windowMgr } from '../ui/window.js';",
+			"import { Menu, msgBox, infoPopup } from '../ui/menu.js';",
+			"$0",
+		],
+	},
+	"Menu entry": {
+		"scope": "javascript",
+		"prefix": "ap-entry",
+		"description": "Entry with an action and an optional value on the right",
+		"body": [
+			"m.addEntry('${1:ENTRY}', () => ${2:action()}, { value: '${3:VALUE}', valueColor: '${4|Green,Tertiary,Red|}' });",
+		],
+	},
+	"Info row (non-selectable)": {
+		"scope": "javascript",
+		"prefix": "ap-info-row",
+		"description": "Small grey explanatory row in a menu",
+		"body": [
+			"m.addRow('', null, {",
+			"  value: '${1:EXPLANATION}',",
+			"  valueSmall: true,",
+			"  valueColor: 'Tertiary',",
+			"  disabled: true,",
+			"});",
+		],
+	},
+	"Settings menu (SettingsMenu)": {
+		"scope": "javascript",
+		"prefix": "ap-settings-menu",
+		"description": "Menu that saves settings when closed (sw/opt/text)",
+		"body": [
+			"const m = new SettingsMenu('${1:TITLE}');",
+			"m.sw('${2:TOGGLE}', '${3:WebSetting}');",
+			"m.opt('${4:SELECTION}', '${5:WebOption}', [",
+			"  ['${6:OFF}', '${7:off}'],",
+			"  ['${8:ON}', '${9:on}'],",
+			"]);",
+			"m.text('${10:TEXT}', '${11:WebText}', { title: '${12:INPUT}' });",
+			"m.onSaved = () => {",
+			"  $0",
+			"};",
+			"windowMgr.push(m);",
+		],
+	},
+	"Message with buttons": {
+		"scope": "javascript",
+		"prefix": "ap-msgbox",
+		"description": "msgBox with two buttons",
+		"body": [
+			"msgBox('${1:MESSAGE}', [",
+			"  ['${2:OK}', () => ${3:ok()}],",
+			"  [t('CANCEL'), null],",
+			"]);"
+		],
+	},
+	"Confirmation as a Promise": {
+		"scope": "javascript",
+		"prefix": "ap-confirm",
+		"description": "Yes/No question that waits for a response",
+		"body": [
+			"const ok = await new Promise((resolve) =>",
+			"  msgBox('${1:QUESTION?}', [",
+			"    [t('YES'), () => resolve(true)],",
+			"    [t('NO'), () => resolve(false)],",
+			"  ]),",
+			");",
+			"if (!ok) return;",
+			"$0",
+		],
+	},
+	"Brief popup notification": {
+		"scope": "javascript",
+		"prefix": "ap-popup",
+		"description": "Display an infoPopup for a few seconds",
+		"body": ["infoPopup('${1:TEXT}', ${2:3000});"],
+	},
+	"API call (frontend)": {
+		"scope": "javascript",
+		"prefix": "ap-api-client",
+		"description": "Add an entry to the api object (public/js/core/api.js)",
+		"body": ["${1:name}: (${2:body}) => call('${3|POST,GET|}', '/api/${4:path}'${5:, body}),"],
+	},
+	"API route (server)": {
+		"scope": "javascript",
+		"prefix": "ap-api-route",
+		"description": "Add a new route to lib/app-server.js",
+		"body": [
+			"if (path === '/api/${1:path}' && method === '${2|POST,GET|}') {",
+			"  const b = await readBody(req);",
+			"  $0",
+			"  return json(res, { ok: true });",
+			"}",
+		],
+	},
+	"Database method (store)": {
+		"scope": "javascript",
+		"prefix": "ap-db-method",
+		"description": "Method in lib/db.js with a prepared query",
+		"body": [
+			"${1:name}(${2:id}) {",
+			"  return this.q('${3:SELECT * FROM ${4:table} WHERE ${5:id} = ?}').${6|get,all,run|}(${2:id});",
+			"}",
+		],
+	},
+	"Table (schema)": {
+		"scope": "javascript",
+		"prefix": "ap-table",
+		"description": "Create a new table in lib/schema.js (no JSON/XML columns: use a separate table for each list)",
+		"body": [
+			"CREATE TABLE IF NOT EXISTS ${1:name} (",
+			"  ${2:id}      ${3|INTEGER PRIMARY KEY,TEXT PRIMARY KEY|},",
+			"  ${4:value}   TEXT NOT NULL DEFAULT '',   -- ${5:Description}",
+			"  created  INTEGER NOT NULL DEFAULT (unixepoch())",
+			");",
+		],
+	},
+	"Platform switch": {
+		"scope": "javascript",
+		"prefix": "ap-platform",
+		"description": "Distinguish between Linux and Windows (only in lib/, not in the frontend)",
+		"body": [
+			"if (process.platform === 'win32') {",
+			"  ${1:// Windows}",
+			"} else {",
+			"  ${2:// Linux}",
+			"}"
+		],
+	},
+	"Log entry": {
+		"scope": "javascript",
+		"prefix": "ap-log",
+		"description": "Log line in logs/arcadeplanet.log (German, for troubleshooting on the user's system)",
+		"body": ["this.log(`${1:Message}: ${${2:value}}`);"],
+	},
+	"Network action (netAction)": {
+		"scope": "javascript",
+		"prefix": "ap-net-action",
+		"description": "Add a new action for POST /api/net (lib/app-server.js → NetService)",
+		"body": [
+			"case '${1:action}':",
+			"  return needPub((p) => net.${2:method}(p${3:, b}));"
+		],
+	},
+	"Send lobby message": {
+		"scope": "javascript",
+		"prefix": "ap-net-send",
+		"description": "Send a message to all lobby members (lib/net/service.js)",
+		"body": [
+			"for (const m of this.lobby.members) if (m.pub !== this.pub) this.sendLive(m.pub, { t: '${1:type}', id: this.lobby.id${2:, value} });",
+		],
+	},
+	"Test: wait until": {
+		"scope": "javascript",
+		"prefix": "ap-test-wait",
+		"description": "waitFor in a network test (text is displayed as OK/FAIL)",
+		"body": [
+			"await waitFor('${1:Description}', async () => ${2:(await st()).lobby?.members.length === 2}, ${3:60_000});",
+		],
+	},
+	"Test: check condition": {
+		"scope": "javascript",
+		"prefix": "ap-test-check",
+		"description": "check in a network test",
+		"body": ["check(${1:condition}, '${2:Description}');"],
+	},
+	"File header": {
+		"scope": "javascript",
+		"prefix": "ap-header",
+		"description": "Comment at the beginning of a file describing what the file does",
+		"body": ["// ${1:What this file does, in one or two sentences.}", "", "$0"],
+	},
+	"Section divider": {
+		"scope": "javascript",
+		"prefix": "ap-section",
+		"description": "Section divider matching the style used throughout the codebase",
+		"body": ["// ------------------------------------------------------------------ ${1:section}"],
+	},
+	"Chronology entry": {
+		"scope": "markdown",
+		"prefix": "ap-chronik",
+		"description": "Entry in §2 Chronology",
+		"body": ["| ${1:No.} | ${2:Request} | ${3:Result} |"],
+	},
+	"Pitfall": {
+		"scope": "markdown",
+		"prefix": "ap-fallstrick",
+		"description": "Section in §5 Findings and Pitfalls",
+		"body": [
+			"### ${1:Topic} (${CURRENT_DATE}.${CURRENT_MONTH}.${CURRENT_YEAR})",
+			"- ${2:What happened, why it happened, and how it was resolved.}",
+		],
+	},
+}

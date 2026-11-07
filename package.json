@@ -1,0 +1,25 @@
+{
+	"name": "arcadeplanet",
+	"productName": "Arcade Planet",
+	"version": "0.9.0",
+	"private": true,
+	"description": "Arcade Planet – An Electron-based gaming frontend combining EmulationStation's interface style with the Arcade Planet theme, featuring emulator configuration, integration, and game launching.",
+	"author": "Arcade Planet",
+	"license": "GPL-3.0-or-later",
+	"type": "module",
+	"main": "electron/main.js",
+	"scripts": {
+		"start": "ARCADEPLANET_OZONE=x11 ARCADEPLANET_GPU_LEVEL=1 electron --ozone-platform=x11 .",
+		"server": "node server.js",
+		"dist:linux": "electron-builder --linux AppImage --publish never",
+		"seed": "node tools/build-seed.mjs",
+		"dist:win": "electron-builder --win nsis --x64 --publish never"
+	},
+	"engines": {
+		"node": ">=22.13"
+	},
+	"devDependencies": {
+		"electron": "45.2.0",
+		"electron-builder": "^26.15.0"
+	}
+}

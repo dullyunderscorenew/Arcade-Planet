@@ -1,0 +1,9 @@
+data/
+dist/
+node_modules/
+public/res/
+*.md
+theme/
+esde-resources/
+tools/theme/
+LICENSES/
